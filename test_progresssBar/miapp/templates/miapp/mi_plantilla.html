@@ -1,82 +1,334 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Statistics with Progress Bars</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barras de Progreso</title>
     <style>
-        /* Estilo para la tabla */
         body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            background-color: #f9f9f9;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            transition: background-color 0.5s, color 0.5s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 20px;
+            min-height: 100vh;
         }
 
-        h1 {
-            text-align: center;
-            color: #333;
+        /* Variables para temas */
+        :root {
+            --background-color: #ffffff;
+            --text-color: #333333;
+            --table-background: #f9f9f9;
+            --table-border: #dddddd;
+            --table-header-background: #4CAF50;
+            --table-header-text: #ffffff;
+            --button-background: #4CAF50;
+            --button-text: #ffffff;
+            --box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+        }
+
+        [data-theme="dark"] {
+            --background-color: #1e1e1e;
+            --text-color: #e0e0e0;
+            --table-background: #2e2e2e;
+            --table-border: #444444;
+            --table-header-background: #444444;
+            --table-header-text: #f0f0f0;
+            --button-background: #888888;
+            --button-text: #ffffff;
+            --box-shadow: rgba(255, 255, 255, 0.1) 0px 4px 12px;
+        }
+
+        h2 {
+            margin-bottom: 15px;
+            font-weight: 600;
+            color: var(--text-color);
+            font-size: 24px;
         }
 
         table {
-            width: 80%;
-            margin: 0 auto;
+            width: 100%;
+            max-width: 700px;
             border-collapse: collapse;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            background-color: #fff;
+            margin: 20px 0;
+            background-color: var(--table-background);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
         }
 
         th, td {
-            border: 1px solid #ddd;
-            padding: 12px;
+            padding: 16px;
+            border-bottom: 1px solid var(--table-border);
             text-align: left;
+            font-size: 16px;
         }
 
         th {
-            background-color: #4CAF50;
-            color: white;
+            background-color: var(--table-header-background);
+            color: var(--table-header-text);
+            font-weight: 600;
         }
 
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
+        td {
+            font-size: 15px;
+            color: var(--text-color);
         }
 
         tr:hover {
-            background-color: #ddd;
-        }
-
-        .progress-container {
-            width: 100%;
-            background-color: #f3f3f3;
-            border-radius: 5px;
-            overflow: hidden;
-            position: relative;
-            height: 20px;
+            background-color: var(--table-background);
         }
 
         .progress-bar {
-            height: 100%;
-            width: 0;
-            border-radius: 5px 0 0 5px;
-            transition: width 2s ease-in-out;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
         }
 
         .progress-bar-fill {
+            height: 22px;
+            width: 0;
+            background-color: #4caf50;
+            text-align: center;
+            line-height: 22px;
+            color: white;
+            transition: width 1.5s ease-in-out;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .progress-bar-label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: var(--text-color);
+        }
+
+        /* Botón de tema oscuro/claro personalizado */
+        .phone {
+            position: relative;
+            z-index: 2;
+            width: 14rem;
+            height: 12rem;
+            background-color: inherit;
+            box-shadow: 0 4px 25px rgba(0,0,0,.1);
+            border-radius: 30px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .menu {
+            font-size: 70%;
+            opacity: .4;
+            padding: .6rem 1.4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .icons {
+            display: flex;
+            margin-top: .4rem;
+        }
+
+        .battery {
+            width: .7rem;
+            height: .35rem;
+            background-color: black;
+        }
+
+        .network {
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 0 5.6px 6px 5.6px;
+            border-color: transparent transparent black transparent;
+            transform: rotate(135deg);
+            margin: .1rem .4rem;
+        }
+
+        .content {
+            display: flex;
+            flex-direction: column;
+            margin: auto;
+            text-align: center;
+            width: 70%;
+            transform: translateY(5%);
+        }
+
+        .circle {
+            position: relative;
+            border-radius: 100%;
+            width: 5rem;
+            height: 5rem;
+            background: linear-gradient(40deg, #FF0080,#FF8C00 70%);
+            margin: auto;
+        }
+
+        .crescent {
+            position: absolute;
+            border-radius: 100%;
+            right: 0;
+            width: 3.5rem;
+            height: 3.5rem;
+            background: white;
+            transform: scale(0);
+            transform-origin: top right;
+            transition: transform .6s cubic-bezier(0.645, 0.045, 0.355, 1);
+        }
+
+        label, .toggle {
+            height: 2rem;
+            border-radius: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        label {
+            width: 100%;
+            background-color: rgba(0,0,0,.1);
+            border-radius: 100px;
+            margin: 1.2rem 0 3rem 0;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            padding: 0;
+        }
+
+        .toggle {
+            position: absolute;
             height: 100%;
-            border-radius: 5px 0 0 5px;
+            width: 50%;
+            background-color: #fff;
+            box-shadow: 0 2px 12px rgba(0,0,0,.15);
+            transition: transform .3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            border-radius: 100px;
+        }
+
+        .names {
+            font-size: 85%;
+            font-weight: bolder;
+            color: black;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            z-index: 1;
+            padding: 0 0.2rem;
+            user-select: none;
+        }
+
+        .claro, .oscuro {
+            flex: 1;
+            text-align: center;
+        }
+
+        .time {
+            color: black;
+        }
+
+        /* Toggle Checkbox Styles */
+        [type="checkbox"] {
+            display: none;
+        }
+
+        [type="checkbox"]:checked + .app .toggle {
+            transform: translateX(100%);
+            background-color: #34323D;
+        }
+
+        [type="checkbox"]:checked + .app .oscuro {
+            opacity: 1;
+            color: white;
+        }
+
+        [type="checkbox"]:checked + .app .claro {
+            opacity: 1;
+            color: white;
+        }
+
+        [type="checkbox"]:checked + .app .body {
+            background-color: #26242E;
+            color: white;
+        }
+
+        [type="checkbox"]:checked + .app .crescent {
+            transform: scale(1);
+            background: #26242E;
+        }
+
+        [type="checkbox"]:checked + .app .circle {
+            background: linear-gradient(40deg, #8983F7, #A3DAFB 70%);
+        }
+
+        [type="checkbox"]:checked + .app .main-circle {
+            background: linear-gradient(40deg, #8983F7, #A3DAFB 70%);
+        }
+
+        [type="checkbox"]:checked + .time {
+            color: white;
+        }
+
+        [type="checkbox"]:checked + .app .body .phone .menu .time {
+            color: white;
+        }
+
+        [type="checkbox"]:checked + .app .body .phone .menu .icons .network {
+            border-color: transparent transparent white transparent;
+        }
+
+        [type="checkbox"]:checked + .app .body .phone .menu .icons .battery {
+            background-color: white;
+        }
+
+        [type="checkbox"]:checked + .app .body {
+            border-radius: 40px;
         }
     </style>
 </head>
 <body>
-    <h1>Statistics</h1>
+
+    <input id="switch" type="checkbox">
+    <div class="app">
+        <div class="body">
+            <div class="phone">
+                <div class="menu">
+                    <div class="time">4:20</div>
+                    <div class="icons">
+                        <div class="network"></div>
+                        <div class="battery"></div>
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="circle">
+                        <div class="crescent"></div>
+                    </div>
+                    <label for="switch">
+                        <div class="toggle"></div>
+                        <div class="names">
+                            <p class="claro">Claro</p>
+                            <p class="oscuro">Oscuro</p>
+                        </div>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h2>Estadísticas de Progreso</h2>
+
     <table>
         <thead>
             <tr>
-                <th>Statistic</th>
-                <th>Progress</th>
+                <th>Estadística</th>
+                <th>Progreso</th>
             </tr>
         </thead>
         <tbody>
@@ -84,9 +336,9 @@
             <tr>
                 <td>{{ stat.name }}</td>
                 <td>
-                    <div class="progress-container">
-                        <div id="progress-bar-{{ forloop.counter }}" class="progress-bar" style="background-color: {{ stat.color }}; width: {{ stat.value }}%;">
-                            <span>{{ stat.value }}%</span>
+                    <div class="progress-bar">
+                        <div class="progress-bar-fill" style="width: 0; background-color: {{ stat.color }};">
+                            {{ stat.value }}%
                         </div>
                     </div>
                 </td>
@@ -96,16 +348,28 @@
     </table>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const progressBars = document.querySelectorAll('.progress-bar');
+        // Al cargar la página, aplicar el tema guardado en localStorage
+        window.onload = function() {
+            const storedTheme = localStorage.getItem('theme');
+            if (storedTheme) {
+                document.documentElement.setAttribute('data-theme', storedTheme);
+                document.getElementById('switch').checked = storedTheme === 'dark';
+            }
+
+            const progressBars = document.querySelectorAll('.progress-bar-fill');
             progressBars.forEach(bar => {
-                const width = bar.style.width;
-                bar.style.width = '0';
-                setTimeout(() => {
-                    bar.style.width = width;
-                }, 100);
+                bar.style.width = bar.textContent.trim();
             });
+        }
+
+        // Cambiar el tema con el switch y guardar en localStorage
+        document.getElementById('switch').addEventListener('change', function() {
+            const isChecked = this.checked;
+            const newTheme = isChecked ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
         });
     </script>
+
 </body>
 </html>

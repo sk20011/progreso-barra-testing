@@ -1,0 +1,48 @@
+[
+    {
+      "model": "miapp.stat",
+      "pk": 1,
+      "fields": {
+        "name": "Win Rate",
+        "value": 60,
+        "color": "#4CAF50"
+      }
+    },
+    {
+      "model": "miapp.stat",
+      "pk": 2,
+      "fields": {
+        "name": "Kill Participation",
+        "value": 75,
+        "color": "#FF9800"
+      }
+    },
+    {
+      "model": "miapp.stat",
+      "pk": 3,
+      "fields": {
+        "name": "Average Kills",
+        "value": 65,
+        "color": "#2196F3"
+      }
+    },
+    {
+      "model": "miapp.stat",
+      "pk": 4,
+      "fields": {
+        "name": "Average Assists",
+        "value": 80,
+        "color": "#8E44AD"
+      }
+    },
+    {
+      "model": "miapp.stat",
+      "pk": 5,
+      "fields": {
+        "name": "Games Played with Champion X",
+        "value": 45,
+        "color": "#F44336"
+      }
+    }
+  ]
+  
